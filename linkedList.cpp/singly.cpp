@@ -1,4 +1,5 @@
 #include<iostream>
+#include<map>
 using namespace std;
 
 class Node{
@@ -65,6 +66,7 @@ void print(Node* &head){
     }
     cout<<endl;
 }
+
 void deleteNode(int position, Node* &head){
     if (position ==1)
     {
@@ -87,8 +89,26 @@ void deleteNode(int position, Node* &head){
         curr -> next = NULL;
         delete curr;
     }
+}
+
+    bool DetectLoop(Node*head){
+    if(head==NULL){
+        return false;
+    }
+    map<Node*,bool>visited;
+    Node* temp= head;
+
+    while(temp!=NULL){
+        if(visited[temp]==true){
+            cout<<"loop starts from the element "<<temp->data<<endl;
+            return true;
+        }
+        visited[temp]= true;
+        temp= temp->next;
+    }
+    return false;
+}
     
-} 
 int main(){
     //node creation
     Node* node1 = new Node(10);
@@ -98,22 +118,31 @@ int main(){
     //head pointed to node1
     Node* head = node1;
     Node* tail = node1;
-    print(head);
+    // print(head);
     // insertAtHead(head, 12);
     // print(head);
     // insertAtHead(head, 15);
     // print(head);
     
     insertAtTail(tail, 12);
-    print(head);
+    // print(head);
     insertAtTail(tail, 15);
-    print(head);
+    // print(head);
 
     insertAtPosition(tail, head, 4, 22);
-    print(head);
+    // print(head);
+    tail->next= head->next;
     cout<<"head:"<<head->data<<endl;
     cout<<"tail:"<<tail->data<<endl;
-    deleteNode(1,head);
-    print(head);
+    
+    // deleteNode(1,head);
+    //print(head);
+    if(DetectLoop(head)){
+        cout<<"cycle is present"<<endl;
+    }
+    else{
+        cout<<"No cycle is present"<<endl;
+    }
+
     return 0;
 }
